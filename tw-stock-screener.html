@@ -37,9 +37,9 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 .wrap {
-  max-width: 1420px;
+  max-width: 1480px;
   margin: 0 auto;
-  padding: 26px 24px 64px;
+  padding: 24px 20px 64px;
 }
 /* Header */
 .top {
@@ -48,7 +48,7 @@ body {
   align-items: center;
   flex-wrap: wrap;
   gap: 16px;
-  margin-bottom: 22px;
+  margin-bottom: 20px;
 }
 .eyebrow {
   display: inline-flex;
@@ -110,21 +110,21 @@ body {
 .summary-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
-  gap: 14px;
+  gap: 12px;
   margin-bottom: 20px;
 }
 .kpi-card {
   background: var(--card);
   border: 1px solid var(--line);
   border-radius: var(--radius);
-  padding: 13px 18px;
+  padding: 12px 16px;
   box-shadow: var(--shadow-sm);
   transition: border-color 0.15s;
 }
 .kpi-card:hover { border-color: #cbd5e1; }
 .kpi-card small {
   display: block;
-  font-size: 11.5px;
+  font-size: 11px;
   font-weight: 600;
   color: var(--muted);
   text-transform: uppercase;
@@ -132,7 +132,7 @@ body {
   margin-bottom: 4px;
 }
 .kpi-card strong {
-  font-size: 21px;
+  font-size: 20px;
   font-weight: 700;
   color: var(--ink);
   letter-spacing: -0.02em;
@@ -150,8 +150,8 @@ body {
 /* Main Layout */
 .layout {
   display: grid;
-  grid-template-columns: 310px 1fr;
-  gap: 20px;
+  grid-template-columns: 320px 1fr;
+  gap: 18px;
   align-items: start;
 }
 .panel, .results {
@@ -161,16 +161,16 @@ body {
   box-shadow: var(--shadow-sm);
 }
 .panel {
-  padding: 20px;
+  padding: 18px;
   position: sticky;
-  top: 20px;
+  top: 18px;
 }
 .panel-head {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 16px;
-  padding-bottom: 12px;
+  margin-bottom: 14px;
+  padding-bottom: 10px;
   border-bottom: 1px solid var(--line);
 }
 .panel h2 {
@@ -189,7 +189,7 @@ body {
 
 /* Preset Strategies */
 .preset-section {
-  margin-bottom: 18px;
+  margin-bottom: 16px;
 }
 .preset-title {
   font-size: 12px;
@@ -207,7 +207,7 @@ body {
   background: #f1f5f9;
   border: 1px solid #e2e8f0;
   color: #334155;
-  padding: 6px 11px;
+  padding: 5px 10px;
   border-radius: 7px;
   font-size: 12px;
   font-weight: 600;
@@ -224,19 +224,29 @@ body {
   border-color: var(--primary);
   color: #fff;
 }
+.preset-chip.turnaround-chip {
+  background: #fffbeb;
+  border-color: #fde68a;
+  color: #b45309;
+}
+.preset-chip.turnaround-chip:hover, .preset-chip.turnaround-chip.active {
+  background: #d97706;
+  border-color: #d97706;
+  color: #fff;
+}
 
 /* Form Fields */
 .field {
-  margin-bottom: 13px;
+  margin-bottom: 12px;
 }
 .field label {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 12.5px;
+  font-size: 12px;
   font-weight: 600;
   color: #334155;
-  margin-bottom: 5px;
+  margin-bottom: 4px;
 }
 .field small {
   color: var(--muted);
@@ -248,7 +258,7 @@ input[type="number"], input[type="search"], input[type="text"] {
   border: 1px solid var(--line);
   background: #fff;
   border-radius: 8px;
-  padding: 8px 12px;
+  padding: 7px 11px;
   font-size: 13px;
   color: var(--ink);
   outline: none;
@@ -260,19 +270,19 @@ input:focus {
 }
 .checkbox-group {
   margin: 14px 0;
-  padding: 12px;
+  padding: 10px 12px;
   background: #f8fafc;
   border-radius: 8px;
   border: 1px solid #edf2f7;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 7px;
 }
 .checkbox-item {
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 12.5px;
+  font-size: 12px;
   color: #334155;
   cursor: pointer;
   user-select: none;
@@ -293,9 +303,49 @@ input:focus {
   border-radius: 8px;
   font-size: 11.5px;
   line-height: 1.65;
-  margin-top: 16px;
+  margin-top: 14px;
 }
 .hint-box a { color: var(--primary); text-decoration: underline; }
+
+/* Status Highlights */
+.row-turnaround {
+  background: #fffdf5 !important;
+}
+.row-turnaround:hover td {
+  background: #fef9c3 !important;
+}
+.row-loss {
+  background: #fff8f8 !important;
+}
+.row-loss:hover td {
+  background: #fee2e2 !important;
+}
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 10.5px;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+.status-badge.turnaround {
+  background: #fef3c7;
+  color: #92400e;
+  border: 1px solid #fde68a;
+}
+.status-badge.loss {
+  background: #fee2e2;
+  color: #991b1b;
+  border: 1px solid #fecaca;
+}
+.status-badge.profitable {
+  background: #ecfdf5;
+  color: #065f46;
+  border: 1px solid #a7f3d0;
+}
 
 /* Results & Toolbar */
 .toolbar {
@@ -304,7 +354,7 @@ input:focus {
   justify-content: space-between;
   flex-wrap: wrap;
   gap: 12px;
-  padding: 14px 18px;
+  padding: 12px 16px;
   border-bottom: 1px solid var(--line);
   background: #ffffff;
   border-top-left-radius: var(--radius);
@@ -313,7 +363,7 @@ input:focus {
 .toolbar-left {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
 }
 .view-tabs {
   display: inline-flex;
@@ -325,9 +375,9 @@ input:focus {
 .view-tab {
   border: 0;
   background: transparent;
-  padding: 6px 12px;
+  padding: 5px 11px;
   border-radius: 6px;
-  font-size: 13px;
+  font-size: 12.5px;
   font-weight: 600;
   color: var(--muted);
   cursor: pointer;
@@ -350,7 +400,7 @@ input:focus {
 /* Table Styles */
 .tablewrap {
   overflow-x: auto;
-  max-height: 68vh;
+  max-height: 70vh;
   position: relative;
 }
 table {
@@ -367,7 +417,7 @@ thead th {
   font-size: 12px;
   font-weight: 700;
   text-align: right;
-  padding: 11px 14px;
+  padding: 10px 12px;
   border-bottom: 2px solid var(--line);
   z-index: 10;
   letter-spacing: 0.03em;
@@ -379,7 +429,6 @@ thead th:first-child {
   z-index: 11;
   background: #f8fafc;
 }
-/* Sortable column styling */
 th.sortable {
   cursor: pointer;
   user-select: none;
@@ -395,7 +444,7 @@ th.active-sort {
 }
 .sort-icon {
   display: inline-block;
-  margin-left: 4px;
+  margin-left: 3px;
   font-size: 11px;
   color: #94a3b8;
   font-weight: 700;
@@ -407,8 +456,8 @@ th.active-sort .sort-icon {
 
 tbody td {
   text-align: right;
-  padding: 11px 14px;
-  font-size: 13.5px;
+  padding: 10px 12px;
+  font-size: 13px;
   border-bottom: 1px solid #f1f5f9;
   color: #334155;
   transition: background 0.1s;
@@ -417,13 +466,10 @@ tbody td:first-child {
   text-align: left;
   position: sticky;
   left: 0;
-  background: var(--card);
+  background: inherit;
   z-index: 2;
 }
 tbody tr:hover td {
-  background: #f8fafc;
-}
-tbody tr:hover td:first-child {
   background: #f8fafc;
 }
 
@@ -431,7 +477,7 @@ tbody tr:hover td:first-child {
 .stock-cell {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 7px;
 }
 .fav-btn {
   background: transparent;
@@ -463,20 +509,19 @@ tbody tr:hover td:first-child {
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  margin-left: 3px;
+  margin-left: 2px;
 }
 .ext-tag {
   font-size: 10px;
   font-weight: 700;
   text-decoration: none;
-  padding: 1.5px 5px;
+  padding: 1px 5px;
   border-radius: 4px;
   line-height: 1.2;
   transition: all 0.15s ease;
   display: inline-flex;
   align-items: center;
 }
-/* TradingView tag styling */
 .ext-tag.tv-tag {
   background: #131722;
   color: #ffffff;
@@ -487,9 +532,7 @@ tbody tr:hover td:first-child {
   border-color: #2962ff;
   color: #ffffff;
   transform: translateY(-1px);
-  box-shadow: 0 2px 4px rgba(41, 98, 255, 0.25);
 }
-/* Yahoo Finance tag styling */
 .ext-tag.y-tag {
   background: #f3e8ff;
   color: #7e22ce;
@@ -502,7 +545,12 @@ tbody tr:hover td:first-child {
 }
 
 .price-val { font-weight: 600; color: #1e293b; }
+.val-positive { color: var(--red); font-weight: 600; }
+.val-negative { color: var(--green); font-weight: 600; }
 .good { color: var(--green); font-weight: 700; }
+.loss-val { color: var(--red); font-weight: 700; }
+.turnaround-val { color: #b45309; font-weight: 700; }
+
 .empty {
   text-align: center !important;
   color: var(--muted);
@@ -512,7 +560,7 @@ tbody tr:hover td:first-child {
 
 /* Footer status bar */
 .status {
-  padding: 12px 18px;
+  padding: 12px 16px;
   color: var(--muted);
   font-size: 12px;
   border-top: 1px solid var(--line);
@@ -540,7 +588,7 @@ tbody tr:hover td:first-child {
     <div>
       <div class="eyebrow">⚡ TAIWAN EQUITY INTELLIGENCE</div>
       <h1>台股公開資料進階篩選器</h1>
-      <p>即時串接台灣證券交易所 OpenAPI，結合估值、殖利率、年化市銷率與葛拉漢指數。</p>
+      <p>即時串接台灣證券交易所 OpenAPI，結合綜合損益表季報、每月營收年增率、年化市銷率與葛拉漢指數。</p>
     </div>
     <div class="top-actions">
       <button id="export-csv" class="btn btn-outline" title="將目前篩選及排序結果匯出為 CSV">📥 匯出 CSV</button>
@@ -556,6 +604,11 @@ tbody tr:hover td:first-child {
       <span id="count-ratio" class="badge" style="background:#e0f2fe;color:#0369a1;">全部上市</span>
     </div>
     <div class="kpi-card">
+      <small>轉虧為盈潛力股 (黃標)</small>
+      <strong id="turnaround-count" style="color:#b45309;">—</strong>
+      <span class="badge" style="background:#fef3c7;color:#92400e;">營收強勁</span>
+    </div>
+    <div class="kpi-card">
       <small>平均本益比 (PER)</small>
       <strong id="avg-pe">—</strong>
     </div>
@@ -564,12 +617,8 @@ tbody tr:hover td:first-child {
       <strong id="avg-yield" style="color:var(--green);">—</strong>
     </div>
     <div class="kpi-card">
-      <small>平均淨值比 (PBR)</small>
-      <strong id="avg-pb">—</strong>
-    </div>
-    <div class="kpi-card">
-      <small>資料日期 / 來源</small>
-      <strong id="date" style="font-size:17px;">—</strong>
+      <small>資料日期 / 季報</small>
+      <strong id="date" style="font-size:16px;">—</strong>
     </div>
   </section>
 
@@ -586,14 +635,20 @@ tbody tr:hover td:first-child {
       <div class="preset-section">
         <div class="preset-title">💡 經典選股策略快選</div>
         <div class="preset-chips">
+          <span class="preset-chip turnaround-chip" data-preset="turnaround-surge" title="虧損但最新月營收YoY >= +15%">⚡ 轉虧為盈潛力股</span>
           <span class="preset-chip" data-preset="graham">🛡️ 葛拉漢防禦</span>
           <span class="preset-chip" data-preset="dividend">💰 高息存股族</span>
-          <span class="preset-chip" data-preset="turnaround">💎 低基期轉機</span>
+          <span class="preset-chip" data-preset="value-turnaround">💎 低淨值轉機</span>
           <span class="preset-chip" data-preset="growth">🚀 穩健價值</span>
         </div>
       </div>
 
-      <!-- Filter Inputs -->
+      <!-- Turnaround Special Filter -->
+      <div class="field">
+        <label for="min-yoy">月營收年增率 (YoY) 下限 <small>%</small></label>
+        <input id="min-yoy" type="number" step="5" placeholder="例如 15 (正成長)">
+      </div>
+
       <div class="field">
         <label for="pe">PER（本益比）上限 <small>倍</small></label>
         <input id="pe" type="number" min="0" step="0.5" placeholder="例如 15 (不限留白)">
@@ -627,22 +682,29 @@ tbody tr:hover td:first-child {
       <!-- Quick Toggles -->
       <div class="checkbox-group">
         <label class="checkbox-item">
-          <input id="chk-positive-pe" type="checkbox" checked>
-          <span>排除虧損/無本益比 (PER > 0)</span>
+          <input id="chk-only-turnaround" type="checkbox">
+          <span style="color:#b45309;font-weight:700;">⚡ 只看轉虧為盈潛力股（黃標）</span>
+        </label>
+        <label class="checkbox-item">
+          <input id="chk-only-loss" type="checkbox">
+          <span style="color:#dc2626;font-weight:600;">🔴 只看虧損公司（紅標）</span>
+        </label>
+        <label class="checkbox-item">
+          <input id="chk-positive-pe" type="checkbox">
+          <span>排除虧損/無本益比 (PER &gt; 0)</span>
         </label>
         <label class="checkbox-item">
           <input id="chk-has-yield" type="checkbox">
-          <span>排除零配息 (殖利率 > 0)</span>
+          <span>排除零配息 (殖利率 &gt; 0)</span>
         </label>
       </div>
 
       <div class="hint-box">
-        <strong>📌 外部看盤與指標說明</strong><br>
-        • <strong><span style="background:#131722;color:#fff;padding:1px 4px;border-radius:3px;font-size:10px;">TV</span></strong>：開新分頁連至 <strong>TradingView</strong> 查看專業技術線圖與指標。<br>
-        • <strong><span style="background:#f3e8ff;color:#7e22ce;padding:1px 4px;border-radius:3px;font-size:10px;">Y!</span></strong>：開新分頁直達 <strong>Yahoo 股市</strong> 即時報價。<br>
-        • <strong>代號</strong>：點擊代號直達 <strong>Goodinfo!</strong> 查看歷年完整配息與三率。<br>
-        • <strong>排序</strong>：點擊表頭切換排序（空值自動置底）。<br>
-        • 資料來源：<a href="https://openapi.twse.com.tw/" target="_blank" rel="noreferrer">TWSE OpenAPI</a>。
+        <strong>📌 財報狀態底色標記說明</strong><br>
+        • <span class="status-badge turnaround">🟡 潛力轉盈</span>：最新季報 EPS &le; 0 或無 PE，但<strong>最新月營收 YoY &ge; +10%</strong>，具強烈轉機動能。<br>
+        • <span class="status-badge loss">🔴 實質虧損</span>：最新季報虧損且營收未見起色。<br>
+        • <span class="status-badge profitable">🟢 獲利穩健</span>：季報獲利健全。<br>
+        • <strong>官方資料來源</strong>：<a href="https://openapi.twse.com.tw/" target="_blank" rel="noreferrer">TWSE 官方 OpenAPI</a> (t187ap06_L_ci 與 t187ap05_L)。
       </div>
     </aside>
 
@@ -665,6 +727,9 @@ tbody tr:hover td:first-child {
           <thead>
             <tr>
               <th class="sortable" data-key="Code" title="點擊切換排序">股票 <span class="sort-icon">⇅</span></th>
+              <th class="sortable" data-key="ProfitStatus" title="點擊切換排序">營運狀態 <span class="sort-icon">⇅</span></th>
+              <th class="sortable" data-key="EPS" title="點擊切換排序">季報 EPS <span class="sort-icon">⇅</span></th>
+              <th class="sortable" data-key="YoY" title="點擊切換排序">營收 YoY(%) <span class="sort-icon">⇅</span></th>
               <th class="sortable" data-key="Price" title="點擊切換排序">收盤價 <span class="sort-icon">⇅</span></th>
               <th class="sortable" data-key="Volume" title="點擊切換排序">成交量(張) <span class="sort-icon">⇅</span></th>
               <th class="sortable" data-key="pe" title="點擊切換排序">PER (本益比) <span class="sort-icon">⇅</span></th>
@@ -675,7 +740,7 @@ tbody tr:hover td:first-child {
             </tr>
           </thead>
           <tbody id="rows">
-            <tr><td colspan="8" class="empty">正在載入證交所官方資料…</td></tr>
+            <tr><td colspan="11" class="empty">正在載入證交所官方財報與行情資料…</td></tr>
           </tbody>
         </table>
       </div>
@@ -735,6 +800,9 @@ function render() {
   const grahamLimit = num($('graham').value);
   const dyLimit = num($('yield').value);
   const minVol = num($('min-volume').value);
+  const minYoy = num($('min-yoy').value);
+  const onlyTurnaround = $('chk-only-turnaround').checked;
+  const onlyLoss = $('chk-only-loss').checked;
   const positivePeOnly = $('chk-positive-pe').checked;
   const hasYieldOnly = $('chk-has-yield').checked;
 
@@ -744,12 +812,16 @@ function render() {
     const match = `${s.Code} ${s.Name}`.toLowerCase().includes(q);
     if (!match) return false;
 
+    if (onlyTurnaround && s.ProfitStatus !== 'turnaround') return false;
+    if (onlyLoss && s.ProfitStatus === 'profitable') return false;
+
     if (psrLimit !== null && (s.psr === null || s.psr > psrLimit)) return false;
     if (peLimit !== null && (s.pe === null || s.pe > peLimit)) return false;
     if (pbLimit !== null && (s.pb === null || s.pb > pbLimit)) return false;
     if (grahamLimit !== null && (s.graham === null || s.graham > grahamLimit)) return false;
     if (dyLimit !== null && (s.dy === null || s.dy < dyLimit)) return false;
     if (minVol !== null && (s.Volume === null || s.Volume < minVol)) return false;
+    if (minYoy !== null && (s.YoY === null || s.YoY < minYoy)) return false;
 
     if (positivePeOnly && (s.pe === null || s.pe <= 0)) return false;
     if (hasYieldOnly && (s.dy === null || s.dy <= 0)) return false;
@@ -791,6 +863,9 @@ function render() {
   $('count-ratio').textContent = `${((items.length / (stocks.length || 1)) * 100).toFixed(1)}%`;
   $('fav-count').textContent = favorites.size;
 
+  const turnaroundTotal = stocks.filter(s => s.ProfitStatus === 'turnaround').length;
+  $('turnaround-count').textContent = `${turnaroundTotal} 檔`;
+
   const validPEs = items.map(s => s.pe).filter(v => v !== null && v > 0);
   const avgPE = validPEs.length ? (validPEs.reduce((a, b) => a + b, 0) / validPEs.length).toFixed(1) : '—';
   $('avg-pe').textContent = avgPE !== '—' ? `${avgPE} 倍` : '—';
@@ -799,13 +874,9 @@ function render() {
   const avgDY = validDYs.length ? (validDYs.reduce((a, b) => a + b, 0) / validDYs.length).toFixed(2) : '—';
   $('avg-yield').textContent = avgDY !== '—' ? `${avgDY}%` : '—';
 
-  const validPBs = items.map(s => s.pb).filter(v => v !== null && v > 0);
-  const avgPB = validPBs.length ? (validPBs.reduce((a, b) => a + b, 0) / validPBs.length).toFixed(2) : '—';
-  $('avg-pb').textContent = avgPB !== '—' ? `${avgPB} 倍` : '—';
-
   // 5. 渲染表格列
   if (!items.length) {
-    $('rows').innerHTML = `<tr><td colspan="8" class="empty">沒有符合條件的股票。建議放寬篩選範圍或清除條件。</td></tr>`;
+    $('rows').innerHTML = `<tr><td colspan="11" class="empty">沒有符合條件的股票。建議放寬篩選範圍或清除條件。</td></tr>`;
     return;
   }
 
@@ -816,14 +887,35 @@ function render() {
     const priceDisplay = s.Price !== null ? s.Price.toFixed(2) : '—';
     const volDisplay = s.Volume !== null ? s.Volume.toLocaleString() : '—';
 
-    // TradingView TWSE URL format
+    // 狀態標籤與列底色
+    let rowClass = '';
+    let badgeHtml = '';
+    if (s.ProfitStatus === 'turnaround') {
+      rowClass = 'row-turnaround';
+      badgeHtml = `<span class="status-badge turnaround" title="虧損但最新月營收YoY成長">⚡ 潛力轉盈</span>`;
+    } else if (s.ProfitStatus === 'loss') {
+      rowClass = 'row-loss';
+      badgeHtml = `<span class="status-badge loss" title="最新季報虧損">🔴 虧損</span>`;
+    } else {
+      badgeHtml = `<span class="status-badge profitable">🟢 獲利</span>`;
+    }
+
+    // EPS 與 YoY 顯示
+    const epsDisplay = s.EPS !== null ? (s.EPS > 0 ? `+${s.EPS.toFixed(2)}` : s.EPS.toFixed(2)) : '—';
+    const epsClass = s.EPS !== null ? (s.EPS > 0 ? 'good' : 'loss-val') : '';
+
+    let yoyDisplay = '—';
+    let yoyClass = '';
+    if (s.YoY !== null) {
+      yoyDisplay = (s.YoY > 0 ? `+${s.YoY.toFixed(1)}%` : `${s.YoY.toFixed(1)}%`);
+      yoyClass = s.YoY > 0 ? 'val-positive' : 'val-negative';
+    }
+
     const tvUrl = `https://tw.tradingview.com/symbols/TWSE-${s.Code}/`;
-    // Yahoo Finance Taiwan URL format
     const yahooUrl = `https://tw.stock.yahoo.com/quote/${s.Code}`;
-    // Goodinfo URL format
     const goodinfoUrl = `https://goodinfo.tw/tw/StockDetail.asp?STOCK_ID=${s.Code}`;
 
-    return `<tr>
+    return `<tr class="${rowClass}">
       <td>
         <div class="stock-cell">
           <button class="fav-btn ${isFav ? 'active' : ''}" onclick="toggleFavorite('${s.Code}')" title="加入/取消自選">${isFav ? '★' : '☆'}</button>
@@ -835,6 +927,9 @@ function render() {
           </span>
         </div>
       </td>
+      <td style="text-align:center;">${badgeHtml}</td>
+      <td class="${epsClass}">${epsDisplay}</td>
+      <td class="${yoyClass}">${yoyDisplay}</td>
       <td class="price-val">${priceDisplay}</td>
       <td>${volDisplay}</td>
       <td>${s.pe === null ? '—' : s.pe.toFixed(2)}</td>
@@ -850,7 +945,7 @@ function render() {
 async function load(force = false) {
   const b = $('refresh');
   b.disabled = true;
-  $('status-text').textContent = '正在向證交所載入估值、行情與營收股本資料…';
+  $('status-text').textContent = '正在向證交所載入估值、行情、綜合損益表與營收股本資料…';
   try {
     const url = force ? `${API}?force=1` : API;
     const res = await fetch(url, { cache: 'no-store' });
@@ -869,6 +964,9 @@ async function load(force = false) {
       dy: num(x.DividendYield),
       pb: num(x.PBratio),
       graham: num(x.GrahamIndex),
+      EPS: num(x.EPS),
+      YoY: num(x.YoY),
+      ProfitStatus: x.ProfitStatus || 'profitable',
       date: x.Date
     }));
 
@@ -877,8 +975,8 @@ async function load(force = false) {
     render();
 
     const missing = (res.headers.get('X-Data-Warnings') || '').split(',').filter(Boolean);
-    $('status-text').innerHTML = `✓ 已載入 <strong>${stocks.length.toLocaleString()}</strong> 檔上市股票資料（點擊任一表頭可自由排序）。`;
-    $('status-meta').innerHTML = `${missing.length ? `提示：${missing.join('、')}。` : ''}來源：<a href="https://openapi.twse.com.tw/" target="_blank" rel="noreferrer">TWSE OpenAPI</a>`;
+    $('status-text').innerHTML = `✓ 已載入 <strong>${stocks.length.toLocaleString()}</strong> 檔上市股票財報估值資料（支援點擊表頭自由排序）。`;
+    $('status-meta').innerHTML = `${missing.length ? `提示：${missing.join('、')}。` : ''}來源：<a href="https://openapi.twse.com.tw/" target="_blank" rel="noreferrer">TWSE OpenAPI (t187ap06_L_ci / t187ap05_L)</a>`;
   } catch (e) {
     $('status-text').className = 'status error';
     $('status-text').textContent = `載入失敗：${e.message}。請確認伺服器運作正常。`;
@@ -893,16 +991,15 @@ document.querySelectorAll('th.sortable').forEach(th => {
     const key = th.dataset.key;
     if (currentSort.key === key) {
       if (currentSort.dir === 'asc') {
-        currentSort.dir = 'desc'; // 升序 -> 降序
+        currentSort.dir = 'desc';
       } else {
-        // 降序 -> 回復預設（代碼排序）
         currentSort.key = 'Code';
         currentSort.dir = 'asc';
       }
     } else {
       currentSort.key = key;
-      // 殖利率、成交量預設由高到低 (desc)，其餘估值指標預設由低到高 (asc)
-      currentSort.dir = (key === 'dy' || key === 'Volume' || key === 'Price') ? 'desc' : 'asc';
+      // 殖利率、成交量、營收YoY預設由高到低 (desc)
+      currentSort.dir = (key === 'dy' || key === 'Volume' || key === 'Price' || key === 'YoY') ? 'desc' : 'asc';
     }
     render();
   });
@@ -910,10 +1007,11 @@ document.querySelectorAll('th.sortable').forEach(th => {
 
 // 策略快選標籤事件
 const presets = {
-  graham: { pe: 15, pb: 1.5, graham: 22.5, yield: '', psr: '', vol: 100 },
-  dividend: { pe: 16, pb: '', graham: '', yield: 5.5, psr: '', vol: 200 },
-  turnaround: { pe: '', pb: 1.0, graham: '', yield: '', psr: 1.2, vol: 100 },
-  growth: { pe: 20, pb: 2.5, graham: 35, yield: 3.0, psr: 2.5, vol: 300 }
+  'turnaround-surge': { pe: '', pb: '', graham: '', yield: '', psr: '', vol: 50, yoy: 15, onlyTurnaround: true },
+  graham: { pe: 15, pb: 1.5, graham: 22.5, yield: '', psr: '', vol: 100, yoy: '', onlyTurnaround: false },
+  dividend: { pe: 16, pb: '', graham: '', yield: 5.5, psr: '', vol: 200, yoy: '', onlyTurnaround: false },
+  'value-turnaround': { pe: '', pb: 1.0, graham: '', yield: '', psr: 1.2, vol: 100, yoy: '', onlyTurnaround: false },
+  growth: { pe: 20, pb: 2.5, graham: 35, yield: 3.0, psr: 2.5, vol: 300, yoy: 5, onlyTurnaround: false }
 };
 
 document.querySelectorAll('.preset-chip').forEach(chip => {
@@ -929,20 +1027,51 @@ document.querySelectorAll('.preset-chip').forEach(chip => {
     $('yield').value = p.yield;
     $('psr').value = p.psr;
     $('min-volume').value = p.vol;
-    $('chk-positive-pe').checked = true;
+    $('min-yoy').value = p.yoy;
+    $('chk-only-turnaround').checked = p.onlyTurnaround;
+    if (p.onlyTurnaround) {
+      $('chk-positive-pe').checked = false;
+      $('chk-only-loss').checked = false;
+    }
     render();
   });
 });
 
 // 重設條件
 $('btn-reset').addEventListener('click', () => {
-  ['pe', 'pb', 'graham', 'yield', 'psr', 'min-volume', 'search'].forEach(id => $(id).value = '');
+  ['pe', 'pb', 'graham', 'yield', 'psr', 'min-volume', 'min-yoy', 'search'].forEach(id => $(id).value = '');
+  $('chk-only-turnaround').checked = false;
+  $('chk-only-loss').checked = false;
   $('chk-positive-pe').checked = false;
   $('chk-has-yield').checked = false;
   document.querySelectorAll('.preset-chip').forEach(c => c.classList.remove('active'));
   currentSort = { key: 'Code', dir: 'asc' };
   render();
 });
+
+// 互斥勾選框處理
+$('chk-only-turnaround').addEventListener('change', () => {
+  if ($('chk-only-turnaround').checked) {
+    $('chk-positive-pe').checked = false;
+    $('chk-only-loss').checked = false;
+  }
+  render();
+});
+$('chk-only-loss').addEventListener('change', () => {
+  if ($('chk-only-loss').checked) {
+    $('chk-positive-pe').checked = false;
+    $('chk-only-turnaround').checked = false;
+  }
+  render();
+});
+$('chk-positive-pe').addEventListener('change', () => {
+  if ($('chk-positive-pe').checked) {
+    $('chk-only-turnaround').checked = false;
+    $('chk-only-loss').checked = false;
+  }
+  render();
+});
+$('chk-has-yield').addEventListener('change', render);
 
 // 自選股與全部分頁切換
 $('tab-all').addEventListener('click', () => {
@@ -965,22 +1094,25 @@ $('export-csv').addEventListener('click', () => {
     alert('目前沒有符合的資料可匯出！');
     return;
   }
-  const headers = ['股票代號', '股票名稱', '收盤價', '成交量(張)', 'PER(本益比)', '殖利率(%)', 'PBR(淨值比)', 'Graham Index', 'PSR(市銷率)'];
+  const headers = ['股票代號', '股票名稱', '營運狀態', '季報EPS', '營收YoY(%)', '收盤價', '成交量(張)', 'PER(本益比)', '殖利率(%)', 'PBR(淨值比)', 'Graham Index', 'PSR(市銷率)'];
   const csvRows = [headers.join(',')];
 
   document.querySelectorAll('#rows tr').forEach(tr => {
     const tds = tr.querySelectorAll('td');
-    if (tds.length < 8) return;
+    if (tds.length < 11) return;
     const ticker = tds[0].querySelector('.ticker-link')?.textContent.trim() || '';
     const name = tds[0].querySelector('.stock-name')?.textContent.trim() || '';
-    const price = tds[1].textContent.trim();
-    const vol = tds[2].textContent.trim().replaceAll(',', '');
-    const pe = tds[3].textContent.trim();
-    const dy = tds[4].textContent.trim().replace('%', '');
-    const pb = tds[5].textContent.trim();
-    const graham = tds[6].textContent.trim();
-    const psr = tds[7].textContent.trim();
-    csvRows.push([ticker, name, price, vol, pe, dy, pb, graham, psr].map(v => `"${v}"`).join(','));
+    const status = tds[1].textContent.trim();
+    const eps = tds[2].textContent.trim();
+    const yoy = tds[3].textContent.trim().replace('%', '');
+    const price = tds[4].textContent.trim();
+    const vol = tds[5].textContent.trim().replaceAll(',', '');
+    const pe = tds[6].textContent.trim();
+    const dy = tds[7].textContent.trim().replace('%', '');
+    const pb = tds[8].textContent.trim();
+    const graham = tds[9].textContent.trim();
+    const psr = tds[10].textContent.trim();
+    csvRows.push([ticker, name, status, eps, yoy, price, vol, pe, dy, pb, graham, psr].map(v => `"${v}"`).join(','));
   });
 
   const blob = new Blob(['\uFEFF' + csvRows.join('\n')], { type: 'text/csv;charset=utf-8;' });
@@ -993,14 +1125,12 @@ $('export-csv').addEventListener('click', () => {
 });
 
 // 監聽所有輸入欄位即時篩選
-['pe', 'pb', 'graham', 'yield', 'psr', 'min-volume', 'search'].forEach(id => {
+['pe', 'pb', 'graham', 'yield', 'psr', 'min-volume', 'min-yoy', 'search'].forEach(id => {
   $(id).addEventListener('input', () => {
     document.querySelectorAll('.preset-chip').forEach(c => c.classList.remove('active'));
     render();
   });
 });
-$('chk-positive-pe').addEventListener('change', render);
-$('chk-has-yield').addEventListener('change', render);
 $('refresh').addEventListener('click', () => load(true));
 
 // 啟動加載
