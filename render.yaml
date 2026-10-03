@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: tw-stock-screener
+    runtime: python
+    plan: free
+    region: singapore # 離台灣最近的節點，延遲最低
+    buildCommand: "pip install -r requirements.txt || true"
+    startCommand: "python server.py"
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.9

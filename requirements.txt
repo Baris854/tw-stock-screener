@@ -1,0 +1,1 @@
+# 本專案使用 Python 原生標準庫（http.server, urllib, concurrent.futures, json），無須額外依賴

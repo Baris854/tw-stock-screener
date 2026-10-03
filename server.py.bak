@@ -1,0 +1,82 @@
+from concurrent.futures import ThreadPoolExecutor
+from http.server import ThreadingHTTPServer, SimpleHTTPRequestHandler
+from urllib.request import Request, urlopen
+from urllib.error import URLError, HTTPError
+import json
+
+BASE = 'https://openapi.twse.com.tw/v1'
+ENDPOINTS = {
+    'valuation': f'{BASE}/exchangeReport/BWIBBU_ALL',
+    'revenue': f'{BASE}/opendata/t187ap05_L',
+    'quotes': f'{BASE}/exchangeReport/STOCK_DAY_ALL',
+    'companies': f'{BASE}/opendata/t187ap03_L',
+}
+
+def get_json(url):
+    req = Request(url, headers={'User-Agent': 'TaiwanStockScreener/1.1', 'Accept': 'application/json'})
+    with urlopen(req, timeout=8) as response:
+        return json.loads(response.read())
+
+def number(value):
+    try:
+        result = float(str(value).replace(',', '').strip())
+        return result if result == result and abs(result) != float('inf') else None
+    except (TypeError, ValueError):
+        return None
+
+def build_rows():
+    valuation = get_json(ENDPOINTS['valuation'])
+    data = {}
+    warnings = []
+    with ThreadPoolExecutor(max_workers=3) as pool:
+        futures = {name: pool.submit(get_json, ENDPOINTS[name]) for name in ('revenue', 'quotes', 'companies')}
+        for name, future in futures.items():
+            try:
+                data[name] = future.result(timeout=9)
+            except Exception as exc:
+                data[name] = []
+                warnings.append(name)
+    revs = {str(x.get('公司代號', '')).strip(): x for x in data['revenue']}
+    prices = {str(x.get('Code', '')).strip(): number(x.get('ClosingPrice')) for x in data['quotes']}
+    shares = {str(x.get('公司代號', '')).strip(): number(x.get('已發行普通股數或TDR原股發行股數')) for x in data['companies']}
+    rows=[]
+    for item in valuation:
+        code = str(item.get('Code', '')).strip()
+        revenue = number(revs.get(code, {}).get('營業收入-當月營收'))
+        price, issued = prices.get(code), shares.get(code)
+        annual_sales = revenue * 1000 * 12 if revenue and revenue > 0 else None
+        market_cap = price * issued if price is not None and issued is not None else None
+        pe, pb = number(item.get('PEratio')), number(item.get('PBratio'))
+        rows.append({**item, 'PSR': market_cap / annual_sales if market_cap is not None and annual_sales else None,
+                     'GrahamIndex': pe * pb if pe is not None and pb is not None and pe >= 0 and pb >= 0 else None})
+    return rows, warnings
+
+class Handler(SimpleHTTPRequestHandler):
+    def do_GET(self):
+        if self.path.split('?', 1)[0] == '/api/stocks':
+            try:
+                rows, warnings = build_rows()
+                body = json.dumps(rows, ensure_ascii=False).encode('utf-8')
+                self.send_response(200)
+                self.send_header('Content-Type', 'application/json; charset=utf-8')
+                self.send_header('Cache-Control', 'no-store')
+                if warnings:
+                    self.send_header('X-Data-Warnings', ','.join(warnings))
+                self.send_header('Content-Length', str(len(body)))
+                self.end_headers()
+                self.wfile.write(body)
+            except (URLError, HTTPError, TimeoutError, ValueError) as exc:
+                body = json.dumps({'error': f'證交所估值資料暫時無法載入：{exc}'}, ensure_ascii=False).encode('utf-8')
+                self.send_response(502)
+                self.send_header('Content-Type', 'application/json; charset=utf-8')
+                self.send_header('Content-Length', str(len(body)))
+                self.end_headers()
+                self.wfile.write(body)
+            return
+        super().do_GET()
+    def log_message(self, fmt, *args):
+        print('%s - %s' % (self.log_date_time_string(), fmt % args))
+
+if __name__ == '__main__':
+    print('台股篩選器已啟動：http://127.0.0.1:8765/tw-stock-screener.html')
+    ThreadingHTTPServer(('127.0.0.1', 8765), Handler).serve_forever()

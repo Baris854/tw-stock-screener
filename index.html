@@ -1,0 +1,1010 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>台股選股｜公開資料進階篩選器</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f8fafc;
+  --surface: #ffffff;
+  --card: #ffffff;
+  --ink: #0f172a;
+  --muted: #64748b;
+  --line: #e2e8f0;
+  --primary: #2563eb;
+  --primary-hover: #1d4ed8;
+  --primary-light: #eff6ff;
+  --green: #059669;
+  --green-light: #ecfdf5;
+  --red: #dc2626;
+  --red-light: #fef2f2;
+  --amber: #d97706;
+  --amber-light: #fffbeb;
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.07), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+  --radius: 12px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Noto Sans TC', sans-serif;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+.wrap {
+  max-width: 1420px;
+  margin: 0 auto;
+  padding: 26px 24px 64px;
+}
+/* Header */
+.top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 22px;
+}
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--primary);
+  background: var(--primary-light);
+  padding: 4px 10px;
+  border-radius: 9999px;
+  margin-bottom: 6px;
+}
+.top h1 {
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  color: #0f172a;
+}
+.top p {
+  color: var(--muted);
+  font-size: 14px;
+  margin-top: 3px;
+}
+.top-actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--primary);
+  color: #fff;
+  border: 0;
+  border-radius: 9px;
+  padding: 9px 16px;
+  font-size: 13.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  box-shadow: var(--shadow-sm);
+}
+.btn:hover { background: var(--primary-hover); transform: translateY(-1px); }
+.btn:disabled { opacity: 0.6; cursor: wait; transform: none; }
+.btn-outline {
+  background: var(--surface);
+  color: var(--ink);
+  border: 1px solid var(--line);
+}
+.btn-outline:hover {
+  background: #f1f5f9;
+  border-color: #cbd5e1;
+}
+
+/* Summary KPI Cards */
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 14px;
+  margin-bottom: 20px;
+}
+.kpi-card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 13px 18px;
+  box-shadow: var(--shadow-sm);
+  transition: border-color 0.15s;
+}
+.kpi-card:hover { border-color: #cbd5e1; }
+.kpi-card small {
+  display: block;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 4px;
+}
+.kpi-card strong {
+  font-size: 21px;
+  font-weight: 700;
+  color: var(--ink);
+  letter-spacing: -0.02em;
+}
+.kpi-card .badge {
+  display: inline-block;
+  font-size: 11px;
+  padding: 2px 7px;
+  border-radius: 4px;
+  font-weight: 600;
+  margin-left: 6px;
+  vertical-align: middle;
+}
+
+/* Main Layout */
+.layout {
+  display: grid;
+  grid-template-columns: 310px 1fr;
+  gap: 20px;
+  align-items: start;
+}
+.panel, .results {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+}
+.panel {
+  padding: 20px;
+  position: sticky;
+  top: 20px;
+}
+.panel-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--line);
+}
+.panel h2 {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--ink);
+}
+.reset-link {
+  font-size: 12px;
+  color: var(--primary);
+  cursor: pointer;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+/* Preset Strategies */
+.preset-section {
+  margin-bottom: 18px;
+}
+.preset-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--muted);
+  margin-bottom: 8px;
+  letter-spacing: 0.03em;
+}
+.preset-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.preset-chip {
+  background: #f1f5f9;
+  border: 1px solid #e2e8f0;
+  color: #334155;
+  padding: 6px 11px;
+  border-radius: 7px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.preset-chip:hover {
+  background: var(--primary-light);
+  border-color: #bfdbfe;
+  color: var(--primary);
+}
+.preset-chip.active {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: #fff;
+}
+
+/* Form Fields */
+.field {
+  margin-bottom: 13px;
+}
+.field label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #334155;
+  margin-bottom: 5px;
+}
+.field small {
+  color: var(--muted);
+  font-weight: 400;
+  font-size: 11px;
+}
+input[type="number"], input[type="search"], input[type="text"] {
+  width: 100%;
+  border: 1px solid var(--line);
+  background: #fff;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 13px;
+  color: var(--ink);
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+.checkbox-group {
+  margin: 14px 0;
+  padding: 12px;
+  background: #f8fafc;
+  border-radius: 8px;
+  border: 1px solid #edf2f7;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.checkbox-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12.5px;
+  color: #334155;
+  cursor: pointer;
+  user-select: none;
+  font-weight: 500;
+}
+.checkbox-item input[type="checkbox"] {
+  accent-color: var(--primary);
+  width: 15px;
+  height: 15px;
+  cursor: pointer;
+}
+
+.hint-box {
+  background: #f0f7ff;
+  border: 1px solid #dbeafe;
+  color: #1e3a8a;
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 11.5px;
+  line-height: 1.65;
+  margin-top: 16px;
+}
+.hint-box a { color: var(--primary); text-decoration: underline; }
+
+/* Results & Toolbar */
+.toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--line);
+  background: #ffffff;
+  border-top-left-radius: var(--radius);
+  border-top-right-radius: var(--radius);
+}
+.toolbar-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.view-tabs {
+  display: inline-flex;
+  background: #f1f5f9;
+  padding: 3px;
+  border-radius: 8px;
+  gap: 2px;
+}
+.view-tab {
+  border: 0;
+  background: transparent;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--muted);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.view-tab.active {
+  background: #fff;
+  color: var(--ink);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+.toolbar-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.search-input {
+  width: 250px;
+}
+
+/* Table Styles */
+.tablewrap {
+  overflow-x: auto;
+  max-height: 68vh;
+  position: relative;
+}
+table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  white-space: nowrap;
+}
+thead th {
+  position: sticky;
+  top: 0;
+  background: #f8fafc;
+  color: #475569;
+  font-size: 12px;
+  font-weight: 700;
+  text-align: right;
+  padding: 11px 14px;
+  border-bottom: 2px solid var(--line);
+  z-index: 10;
+  letter-spacing: 0.03em;
+}
+thead th:first-child {
+  text-align: left;
+  position: sticky;
+  left: 0;
+  z-index: 11;
+  background: #f8fafc;
+}
+/* Sortable column styling */
+th.sortable {
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.15s, color 0.15s;
+}
+th.sortable:hover {
+  background: #f1f5f9;
+  color: var(--primary);
+}
+th.active-sort {
+  color: var(--primary) !important;
+  background: #eff6ff !important;
+}
+.sort-icon {
+  display: inline-block;
+  margin-left: 4px;
+  font-size: 11px;
+  color: #94a3b8;
+  font-weight: 700;
+  vertical-align: middle;
+}
+th.active-sort .sort-icon {
+  color: var(--primary);
+}
+
+tbody td {
+  text-align: right;
+  padding: 11px 14px;
+  font-size: 13.5px;
+  border-bottom: 1px solid #f1f5f9;
+  color: #334155;
+  transition: background 0.1s;
+}
+tbody td:first-child {
+  text-align: left;
+  position: sticky;
+  left: 0;
+  background: var(--card);
+  z-index: 2;
+}
+tbody tr:hover td {
+  background: #f8fafc;
+}
+tbody tr:hover td:first-child {
+  background: #f8fafc;
+}
+
+/* Stock Cell formatting */
+.stock-cell {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.fav-btn {
+  background: transparent;
+  border: 0;
+  color: #cbd5e1;
+  font-size: 16px;
+  cursor: pointer;
+  padding: 2px;
+  line-height: 1;
+  transition: transform 0.15s, color 0.15s;
+}
+.fav-btn:hover { transform: scale(1.2); color: #f59e0b; }
+.fav-btn.active { color: #f59e0b; }
+.ticker-link {
+  font-weight: 700;
+  color: var(--ink);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+}
+.ticker-link:hover { color: var(--primary); text-decoration: underline; }
+.stock-name {
+  color: #64748b;
+  font-size: 13px;
+  font-weight: 500;
+}
+.ext-links {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: 3px;
+}
+.ext-tag {
+  font-size: 10px;
+  font-weight: 700;
+  text-decoration: none;
+  padding: 1.5px 5px;
+  border-radius: 4px;
+  line-height: 1.2;
+  transition: all 0.15s ease;
+  display: inline-flex;
+  align-items: center;
+}
+/* TradingView tag styling */
+.ext-tag.tv-tag {
+  background: #131722;
+  color: #ffffff;
+  border: 1px solid #131722;
+}
+.ext-tag.tv-tag:hover {
+  background: #2962ff;
+  border-color: #2962ff;
+  color: #ffffff;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(41, 98, 255, 0.25);
+}
+/* Yahoo Finance tag styling */
+.ext-tag.y-tag {
+  background: #f3e8ff;
+  color: #7e22ce;
+  border: 1px solid #e9d5ff;
+}
+.ext-tag.y-tag:hover {
+  background: #7e22ce;
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+.price-val { font-weight: 600; color: #1e293b; }
+.good { color: var(--green); font-weight: 700; }
+.empty {
+  text-align: center !important;
+  color: var(--muted);
+  padding: 48px 16px;
+  font-size: 14px;
+}
+
+/* Footer status bar */
+.status {
+  padding: 12px 18px;
+  color: var(--muted);
+  font-size: 12px;
+  border-top: 1px solid var(--line);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.status.error { color: var(--red); }
+.status a { color: var(--primary); }
+
+@media(max-width: 900px) {
+  .layout { grid-template-columns: 1fr; }
+  .panel { position: static; }
+  .summary-grid { grid-template-columns: repeat(2, 1fr); }
+  .tablewrap { max-height: none; }
+}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <!-- Header -->
+  <header class="top">
+    <div>
+      <div class="eyebrow">⚡ TAIWAN EQUITY INTELLIGENCE</div>
+      <h1>台股公開資料進階篩選器</h1>
+      <p>即時串接台灣證券交易所 OpenAPI，結合估值、殖利率、年化市銷率與葛拉漢指數。</p>
+    </div>
+    <div class="top-actions">
+      <button id="export-csv" class="btn btn-outline" title="將目前篩選及排序結果匯出為 CSV">📥 匯出 CSV</button>
+      <button id="refresh" class="btn">↻ 更新資料</button>
+    </div>
+  </header>
+
+  <!-- Summary KPI Cards -->
+  <section class="summary-grid">
+    <div class="kpi-card">
+      <small>符合條件標的</small>
+      <strong id="count">—</strong>
+      <span id="count-ratio" class="badge" style="background:#e0f2fe;color:#0369a1;">全部上市</span>
+    </div>
+    <div class="kpi-card">
+      <small>平均本益比 (PER)</small>
+      <strong id="avg-pe">—</strong>
+    </div>
+    <div class="kpi-card">
+      <small>平均殖利率 (Yield)</small>
+      <strong id="avg-yield" style="color:var(--green);">—</strong>
+    </div>
+    <div class="kpi-card">
+      <small>平均淨值比 (PBR)</small>
+      <strong id="avg-pb">—</strong>
+    </div>
+    <div class="kpi-card">
+      <small>資料日期 / 來源</small>
+      <strong id="date" style="font-size:17px;">—</strong>
+    </div>
+  </section>
+
+  <!-- Main Layout -->
+  <div class="layout">
+    <!-- Filter Panel -->
+    <aside class="panel">
+      <div class="panel-head">
+        <h2>篩選條件</h2>
+        <span id="btn-reset" class="reset-link">重設全部</span>
+      </div>
+
+      <!-- Strategy Presets -->
+      <div class="preset-section">
+        <div class="preset-title">💡 經典選股策略快選</div>
+        <div class="preset-chips">
+          <span class="preset-chip" data-preset="graham">🛡️ 葛拉漢防禦</span>
+          <span class="preset-chip" data-preset="dividend">💰 高息存股族</span>
+          <span class="preset-chip" data-preset="turnaround">💎 低基期轉機</span>
+          <span class="preset-chip" data-preset="growth">🚀 穩健價值</span>
+        </div>
+      </div>
+
+      <!-- Filter Inputs -->
+      <div class="field">
+        <label for="pe">PER（本益比）上限 <small>倍</small></label>
+        <input id="pe" type="number" min="0" step="0.5" placeholder="例如 15 (不限留白)">
+      </div>
+
+      <div class="field">
+        <label for="yield">殖利率下限 <small>%</small></label>
+        <input id="yield" type="number" min="0" step="0.5" placeholder="例如 5 (不限留白)">
+      </div>
+
+      <div class="field">
+        <label for="pb">PBR（股價淨值比）上限 <small>倍</small></label>
+        <input id="pb" type="number" min="0" step="0.1" placeholder="例如 1.5 (不限留白)">
+      </div>
+
+      <div class="field">
+        <label for="graham">Graham Index 上限 <small>PER × PBR</small></label>
+        <input id="graham" type="number" min="0" step="0.5" placeholder="經典門檻 22.5">
+      </div>
+
+      <div class="field">
+        <label for="psr">PSR（年化市銷率）上限 <small>倍</small></label>
+        <input id="psr" type="number" min="0" step="0.1" placeholder="例如 2.0 (不限留白)">
+      </div>
+
+      <div class="field">
+        <label for="min-volume">成交量下限 <small>張</small></label>
+        <input id="min-volume" type="number" min="0" step="50" placeholder="過濾殭屍股 (例如 200)">
+      </div>
+
+      <!-- Quick Toggles -->
+      <div class="checkbox-group">
+        <label class="checkbox-item">
+          <input id="chk-positive-pe" type="checkbox" checked>
+          <span>排除虧損/無本益比 (PER > 0)</span>
+        </label>
+        <label class="checkbox-item">
+          <input id="chk-has-yield" type="checkbox">
+          <span>排除零配息 (殖利率 > 0)</span>
+        </label>
+      </div>
+
+      <div class="hint-box">
+        <strong>📌 外部看盤與指標說明</strong><br>
+        • <strong><span style="background:#131722;color:#fff;padding:1px 4px;border-radius:3px;font-size:10px;">TV</span></strong>：開新分頁連至 <strong>TradingView</strong> 查看專業技術線圖與指標。<br>
+        • <strong><span style="background:#f3e8ff;color:#7e22ce;padding:1px 4px;border-radius:3px;font-size:10px;">Y!</span></strong>：開新分頁直達 <strong>Yahoo 股市</strong> 即時報價。<br>
+        • <strong>代號</strong>：點擊代號直達 <strong>Goodinfo!</strong> 查看歷年完整配息與三率。<br>
+        • <strong>排序</strong>：點擊表頭切換排序（空值自動置底）。<br>
+        • 資料來源：<a href="https://openapi.twse.com.tw/" target="_blank" rel="noreferrer">TWSE OpenAPI</a>。
+      </div>
+    </aside>
+
+    <!-- Table Results Section -->
+    <section class="results">
+      <div class="toolbar">
+        <div class="toolbar-left">
+          <div class="view-tabs">
+            <button id="tab-all" class="view-tab active">全部標的</button>
+            <button id="tab-fav" class="view-tab">★ 自選追蹤 (<span id="fav-count">0</span>)</button>
+          </div>
+        </div>
+        <div class="toolbar-right">
+          <input id="search" class="search-input" type="search" placeholder="🔍 搜尋代號或名稱 (例: 2330)">
+        </div>
+      </div>
+
+      <div class="tablewrap">
+        <table>
+          <thead>
+            <tr>
+              <th class="sortable" data-key="Code" title="點擊切換排序">股票 <span class="sort-icon">⇅</span></th>
+              <th class="sortable" data-key="Price" title="點擊切換排序">收盤價 <span class="sort-icon">⇅</span></th>
+              <th class="sortable" data-key="Volume" title="點擊切換排序">成交量(張) <span class="sort-icon">⇅</span></th>
+              <th class="sortable" data-key="pe" title="點擊切換排序">PER (本益比) <span class="sort-icon">⇅</span></th>
+              <th class="sortable active-sort" data-key="dy" title="點擊切換排序">殖利率 <span class="sort-icon">▼</span></th>
+              <th class="sortable" data-key="pb" title="點擊切換排序">PBR (淨值比) <span class="sort-icon">⇅</span></th>
+              <th class="sortable" data-key="graham" title="點擊切換排序">Graham Index <span class="sort-icon">⇅</span></th>
+              <th class="sortable" data-key="psr" title="點擊切換排序">PSR (市銷率)* <span class="sort-icon">⇅</span></th>
+            </tr>
+          </thead>
+          <tbody id="rows">
+            <tr><td colspan="8" class="empty">正在載入證交所官方資料…</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div id="status" class="status">
+        <span id="status-text">等待載入</span>
+        <span id="status-meta"></span>
+      </div>
+    </section>
+  </div>
+</main>
+
+<script>
+const API = '/api/stocks';
+let stocks = [];
+let favorites = new Set(JSON.parse(localStorage.getItem('tw_fav_stocks') || '[]'));
+let currentTab = 'all'; // 'all' | 'fav'
+
+// 排序狀態：預設殖利率由高到低 (desc)
+let currentSort = { key: 'dy', dir: 'desc' };
+
+const $ = id => document.getElementById(id);
+const num = v => {
+  if (v === null || v === undefined || String(v).trim() === '') return null;
+  const n = Number(String(v).replaceAll(',', ''));
+  return Number.isFinite(n) ? n : null;
+};
+
+// 儲存與切換自選清單
+function toggleFavorite(code) {
+  if (favorites.has(code)) {
+    favorites.delete(code);
+  } else {
+    favorites.add(code);
+  }
+  localStorage.setItem('tw_fav_stocks', JSON.stringify(Array.from(favorites)));
+  $('fav-count').textContent = favorites.size;
+  render();
+}
+
+function taiwanDate(raw) {
+  if (!raw) return '—';
+  const s = String(raw);
+  if (s.length === 7) {
+    const y = Number(s.slice(0, 3)) + 1911;
+    return `${y}/${s.slice(3, 5)}/${s.slice(5, 7)}`;
+  }
+  return s;
+}
+
+// 核心渲染邏輯：篩選 + 排序 + 統計計算
+function render() {
+  const q = $('search').value.trim().toLowerCase();
+  const psrLimit = num($('psr').value);
+  const peLimit = num($('pe').value);
+  const pbLimit = num($('pb').value);
+  const grahamLimit = num($('graham').value);
+  const dyLimit = num($('yield').value);
+  const minVol = num($('min-volume').value);
+  const positivePeOnly = $('chk-positive-pe').checked;
+  const hasYieldOnly = $('chk-has-yield').checked;
+
+  // 1. 條件過濾
+  let items = stocks.filter(s => {
+    if (currentTab === 'fav' && !favorites.has(s.Code)) return false;
+    const match = `${s.Code} ${s.Name}`.toLowerCase().includes(q);
+    if (!match) return false;
+
+    if (psrLimit !== null && (s.psr === null || s.psr > psrLimit)) return false;
+    if (peLimit !== null && (s.pe === null || s.pe > peLimit)) return false;
+    if (pbLimit !== null && (s.pb === null || s.pb > pbLimit)) return false;
+    if (grahamLimit !== null && (s.graham === null || s.graham > grahamLimit)) return false;
+    if (dyLimit !== null && (s.dy === null || s.dy < dyLimit)) return false;
+    if (minVol !== null && (s.Volume === null || s.Volume < minVol)) return false;
+
+    if (positivePeOnly && (s.pe === null || s.pe <= 0)) return false;
+    if (hasYieldOnly && (s.dy === null || s.dy <= 0)) return false;
+
+    return true;
+  });
+
+  // 2. 雙向多欄位排序（空值始終置底）
+  if (currentSort.key) {
+    const k = currentSort.key;
+    const mult = currentSort.dir === 'desc' ? -1 : 1;
+    items.sort((a, b) => {
+      const va = a[k], vb = b[k];
+      const aNull = (va === null || va === undefined || isNaN(va));
+      const bNull = (vb === null || vb === undefined || isNaN(vb));
+      if (aNull && bNull) return 0;
+      if (aNull) return 1;  // 空值永遠沉底
+      if (bNull) return -1; // 空值永遠沉底
+      if (typeof va === 'string') return va.localeCompare(vb) * mult;
+      return (va - vb) * mult;
+    });
+  }
+
+  // 3. 更新表頭排序箭頭與樣式
+  document.querySelectorAll('th.sortable').forEach(th => {
+    const key = th.dataset.key;
+    const icon = th.querySelector('.sort-icon');
+    if (key === currentSort.key) {
+      th.classList.add('active-sort');
+      icon.textContent = currentSort.dir === 'asc' ? '▲' : '▼';
+    } else {
+      th.classList.remove('active-sort');
+      icon.textContent = '⇅';
+    }
+  });
+
+  // 4. 計算 KPI 統計資訊
+  $('count').textContent = items.length.toLocaleString();
+  $('count-ratio').textContent = `${((items.length / (stocks.length || 1)) * 100).toFixed(1)}%`;
+  $('fav-count').textContent = favorites.size;
+
+  const validPEs = items.map(s => s.pe).filter(v => v !== null && v > 0);
+  const avgPE = validPEs.length ? (validPEs.reduce((a, b) => a + b, 0) / validPEs.length).toFixed(1) : '—';
+  $('avg-pe').textContent = avgPE !== '—' ? `${avgPE} 倍` : '—';
+
+  const validDYs = items.map(s => s.dy).filter(v => v !== null && v > 0);
+  const avgDY = validDYs.length ? (validDYs.reduce((a, b) => a + b, 0) / validDYs.length).toFixed(2) : '—';
+  $('avg-yield').textContent = avgDY !== '—' ? `${avgDY}%` : '—';
+
+  const validPBs = items.map(s => s.pb).filter(v => v !== null && v > 0);
+  const avgPB = validPBs.length ? (validPBs.reduce((a, b) => a + b, 0) / validPBs.length).toFixed(2) : '—';
+  $('avg-pb').textContent = avgPB !== '—' ? `${avgPB} 倍` : '—';
+
+  // 5. 渲染表格列
+  if (!items.length) {
+    $('rows').innerHTML = `<tr><td colspan="8" class="empty">沒有符合條件的股票。建議放寬篩選範圍或清除條件。</td></tr>`;
+    return;
+  }
+
+  $('rows').innerHTML = items.map(s => {
+    const isFav = favorites.has(s.Code);
+    const goodYield = s.dy !== null && s.dy >= 5;
+    const goodGraham = s.graham !== null && s.graham <= 22.5 && s.graham > 0;
+    const priceDisplay = s.Price !== null ? s.Price.toFixed(2) : '—';
+    const volDisplay = s.Volume !== null ? s.Volume.toLocaleString() : '—';
+
+    // TradingView TWSE URL format
+    const tvUrl = `https://tw.tradingview.com/symbols/TWSE-${s.Code}/`;
+    // Yahoo Finance Taiwan URL format
+    const yahooUrl = `https://tw.stock.yahoo.com/quote/${s.Code}`;
+    // Goodinfo URL format
+    const goodinfoUrl = `https://goodinfo.tw/tw/StockDetail.asp?STOCK_ID=${s.Code}`;
+
+    return `<tr>
+      <td>
+        <div class="stock-cell">
+          <button class="fav-btn ${isFav ? 'active' : ''}" onclick="toggleFavorite('${s.Code}')" title="加入/取消自選">${isFav ? '★' : '☆'}</button>
+          <a class="ticker-link" href="${goodinfoUrl}" target="_blank" rel="noreferrer" title="在 Goodinfo 查看完整歷年財報">${s.Code}</a>
+          <span class="stock-name">${s.Name}</span>
+          <span class="ext-links">
+            <a class="ext-tag tv-tag" href="${tvUrl}" target="_blank" rel="noreferrer" title="在 TradingView 查看互動圖表與技術線圖">TV</a>
+            <a class="ext-tag y-tag" href="${yahooUrl}" target="_blank" rel="noreferrer" title="在 Yahoo 股市查看即時走勢">Y!</a>
+          </span>
+        </div>
+      </td>
+      <td class="price-val">${priceDisplay}</td>
+      <td>${volDisplay}</td>
+      <td>${s.pe === null ? '—' : s.pe.toFixed(2)}</td>
+      <td class="${goodYield ? 'good' : ''}">${s.dy === null ? '—' : s.dy.toFixed(2) + '%'}</td>
+      <td>${s.pb === null ? '—' : s.pb.toFixed(2)}</td>
+      <td class="${goodGraham ? 'good' : ''}">${s.graham === null ? '—' : s.graham.toFixed(2)}</td>
+      <td>${s.psr === null ? '—' : s.psr.toFixed(2)}</td>
+    </tr>`;
+  }).join('');
+}
+
+// 載入證交所資料
+async function load(force = false) {
+  const b = $('refresh');
+  b.disabled = true;
+  $('status-text').textContent = '正在向證交所載入估值、行情與營收股本資料…';
+  try {
+    const url = force ? `${API}?force=1` : API;
+    const res = await fetch(url, { cache: 'no-store' });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+    if (!Array.isArray(data)) throw new Error(data.error || 'API 回傳格式異常');
+
+    stocks = data.map(x => ({
+      Code: x.Code,
+      Name: x.Name,
+      Price: num(x.Price),
+      Volume: num(x.Volume),
+      Change: num(x.Change),
+      psr: num(x.PSR),
+      pe: num(x.PEratio),
+      dy: num(x.DividendYield),
+      pb: num(x.PBratio),
+      graham: num(x.GrahamIndex),
+      date: x.Date
+    }));
+
+    const d = data.find(x => x.Date)?.Date;
+    $('date').textContent = taiwanDate(d);
+    render();
+
+    const missing = (res.headers.get('X-Data-Warnings') || '').split(',').filter(Boolean);
+    $('status-text').innerHTML = `✓ 已載入 <strong>${stocks.length.toLocaleString()}</strong> 檔上市股票資料（點擊任一表頭可自由排序）。`;
+    $('status-meta').innerHTML = `${missing.length ? `提示：${missing.join('、')}。` : ''}來源：<a href="https://openapi.twse.com.tw/" target="_blank" rel="noreferrer">TWSE OpenAPI</a>`;
+  } catch (e) {
+    $('status-text').className = 'status error';
+    $('status-text').textContent = `載入失敗：${e.message}。請確認伺服器運作正常。`;
+  } finally {
+    b.disabled = false;
+  }
+}
+
+// 表頭排序事件綁定
+document.querySelectorAll('th.sortable').forEach(th => {
+  th.addEventListener('click', () => {
+    const key = th.dataset.key;
+    if (currentSort.key === key) {
+      if (currentSort.dir === 'asc') {
+        currentSort.dir = 'desc'; // 升序 -> 降序
+      } else {
+        // 降序 -> 回復預設（代碼排序）
+        currentSort.key = 'Code';
+        currentSort.dir = 'asc';
+      }
+    } else {
+      currentSort.key = key;
+      // 殖利率、成交量預設由高到低 (desc)，其餘估值指標預設由低到高 (asc)
+      currentSort.dir = (key === 'dy' || key === 'Volume' || key === 'Price') ? 'desc' : 'asc';
+    }
+    render();
+  });
+});
+
+// 策略快選標籤事件
+const presets = {
+  graham: { pe: 15, pb: 1.5, graham: 22.5, yield: '', psr: '', vol: 100 },
+  dividend: { pe: 16, pb: '', graham: '', yield: 5.5, psr: '', vol: 200 },
+  turnaround: { pe: '', pb: 1.0, graham: '', yield: '', psr: 1.2, vol: 100 },
+  growth: { pe: 20, pb: 2.5, graham: 35, yield: 3.0, psr: 2.5, vol: 300 }
+};
+
+document.querySelectorAll('.preset-chip').forEach(chip => {
+  chip.addEventListener('click', () => {
+    const p = presets[chip.dataset.preset];
+    if (!p) return;
+    document.querySelectorAll('.preset-chip').forEach(c => c.classList.remove('active'));
+    chip.classList.add('active');
+
+    $('pe').value = p.pe;
+    $('pb').value = p.pb;
+    $('graham').value = p.graham;
+    $('yield').value = p.yield;
+    $('psr').value = p.psr;
+    $('min-volume').value = p.vol;
+    $('chk-positive-pe').checked = true;
+    render();
+  });
+});
+
+// 重設條件
+$('btn-reset').addEventListener('click', () => {
+  ['pe', 'pb', 'graham', 'yield', 'psr', 'min-volume', 'search'].forEach(id => $(id).value = '');
+  $('chk-positive-pe').checked = false;
+  $('chk-has-yield').checked = false;
+  document.querySelectorAll('.preset-chip').forEach(c => c.classList.remove('active'));
+  currentSort = { key: 'Code', dir: 'asc' };
+  render();
+});
+
+// 自選股與全部分頁切換
+$('tab-all').addEventListener('click', () => {
+  currentTab = 'all';
+  $('tab-all').classList.add('active');
+  $('tab-fav').classList.remove('active');
+  render();
+});
+$('tab-fav').addEventListener('click', () => {
+  currentTab = 'fav';
+  $('tab-fav').classList.add('active');
+  $('tab-all').classList.remove('active');
+  render();
+});
+
+// 匯出 CSV 功能
+$('export-csv').addEventListener('click', () => {
+  const rows = document.querySelectorAll('table tbody tr');
+  if (!rows.length || rows[0].querySelector('.empty')) {
+    alert('目前沒有符合的資料可匯出！');
+    return;
+  }
+  const headers = ['股票代號', '股票名稱', '收盤價', '成交量(張)', 'PER(本益比)', '殖利率(%)', 'PBR(淨值比)', 'Graham Index', 'PSR(市銷率)'];
+  const csvRows = [headers.join(',')];
+
+  document.querySelectorAll('#rows tr').forEach(tr => {
+    const tds = tr.querySelectorAll('td');
+    if (tds.length < 8) return;
+    const ticker = tds[0].querySelector('.ticker-link')?.textContent.trim() || '';
+    const name = tds[0].querySelector('.stock-name')?.textContent.trim() || '';
+    const price = tds[1].textContent.trim();
+    const vol = tds[2].textContent.trim().replaceAll(',', '');
+    const pe = tds[3].textContent.trim();
+    const dy = tds[4].textContent.trim().replace('%', '');
+    const pb = tds[5].textContent.trim();
+    const graham = tds[6].textContent.trim();
+    const psr = tds[7].textContent.trim();
+    csvRows.push([ticker, name, price, vol, pe, dy, pb, graham, psr].map(v => `"${v}"`).join(','));
+  });
+
+  const blob = new Blob(['\uFEFF' + csvRows.join('\n')], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `台股篩選結果_${new Date().toISOString().slice(0, 10)}.csv`;
+  a.click();
+  URL.revokeObjectURL(url);
+});
+
+// 監聽所有輸入欄位即時篩選
+['pe', 'pb', 'graham', 'yield', 'psr', 'min-volume', 'search'].forEach(id => {
+  $(id).addEventListener('input', () => {
+    document.querySelectorAll('.preset-chip').forEach(c => c.classList.remove('active'));
+    render();
+  });
+});
+$('chk-positive-pe').addEventListener('change', render);
+$('chk-has-yield').addEventListener('change', render);
+$('refresh').addEventListener('click', () => load(true));
+
+// 啟動加載
+load();
+</script>
+</body>
+</html>
